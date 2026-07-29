@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蹦哒儿张 · 个人工作台</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="蹦哒儿张">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><rect width='180' height='180' rx='36' fill='%231a1a1a'/><text x='90' y='118' text-anchor='middle' font-size='100' font-family='serif' fill='white'>蹦</text></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='16' fill='%231a1a1a'/><text x='32' y='44' text-anchor='middle' font-size='36' font-family='serif' fill='white'>蹦</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== 蹦哒儿张 · 个人工作台 ===== */
+:root{
+  --bg:#f6f5f1;
+  --surface:#ffffff;
+  --ink:#1a1a1a;
+  --ink-2:#5a5a5a;
+  --ink-3:#9a9a9a;
+  --line:#e8e6df;
+  --line-2:#f0eee7;
+  --accent:#1a1a1a;
+  --accent-soft:#f0ede4;
+  --done:#8a8a82;
+  --danger:#b8463a;
+  --radius:14px;
+  --radius-sm:10px;
+  --shadow:0 1px 2px rgba(20,20,20,.04), 0 6px 24px rgba(20,20,20,.05);
+  --serif:'Noto Serif SC', serif;
+  --sans:'Inter','Noto Serif SC',sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--ink);
+  font-size:14px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+.app{display:flex;min-height:100vh}
+
+/* ===== 侧边栏 ===== */
+.sidebar{
+  width:240px;
+  flex-shrink:0;
+  background:var(--surface);
+  border-right:1px solid var(--line);
+  display:flex;
+  flex-direction:column;
+  padding:28px 22px;
+  position:sticky;top:0;height:100vh;
+}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:40px}
+.brand-mark{
+  width:42px;height:42px;
+  border-radius:12px;
+  background:var(--ink);
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);
+  font-size:20px;font-weight:600;
+}
+.brand-name{font-family:var(--serif);font-size:16px;font-weight:600;letter-spacing:.5px}
+.brand-sub{font-size:9px;color:var(--ink-3);letter-spacing:2px;margin-top:2px}
+
+.nav{display:flex;flex-direction:column;gap:2px;flex:1}
+.nav-item{
+  display:flex;align-items:center;gap:14px;
+  padding:11px 14px;
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  color:var(--ink-2);
+  transition:all .2s ease;
+  text-decoration:none;
+  user-select:none;
+}
+.nav-item:hover{background:var(--accent-soft);color:var(--ink)}
+.nav-item.active{background:var(--ink);color:#fff}
+.nav-item.active .nav-idx{color:rgba(255,255,255,.5)}
+.nav-idx{font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums;letter-spacing:1px}
+.nav-label{font-size:14px;font-weight:500}
+
+.sidebar-foot{margin-top:20px;padding-top:20px;border-top:1px solid var(--line)}
+.date-label{font-size:12px;color:var(--ink-3);margin-bottom:10px;font-variant-numeric:tabular-nums}
+.reset-btn{
+  font-size:12px;color:var(--ink-2);
+  cursor:pointer;
+  padding:8px 12px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  text-align:center;
+  transition:all .2s;
+}
+.reset-btn:hover{border-color:var(--ink);color:var(--ink)}
+
+/* ===== 主内容 ===== */
+.main{flex:1;padding:48px 56px;max-width:980px}
+.page{display:none;animation:fade .4s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.page-kicker{font-size:10px;color:var(--ink-3);letter-spacing:3px;margin-bottom:8px;font-weight:500}
+.page-title{font-family:var(--serif);font-size:32px;font-weight:600;letter-spacing:.5px}
+.page-date{font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* ===== 进度卡 ===== */
+.progress-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:24px 28px;
+  display:flex;align-items:center;gap:24px;
+  margin-bottom:32px;
+  box-shadow:var(--shadow);
+}
+.progress-info{flex-shrink:0;min-width:160px}
+.progress-label{font-size:12px;color:var(--ink-3);margin-bottom:4px}
+.progress-num{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+.progress-track{flex:1;height:6px;background:var(--line-2);border-radius:3px;overflow:hidden}
+.progress-track.big{height:10px;margin:18px 0 12px}
+.progress-bar{height:100%;background:var(--ink);border-radius:3px;transition:width .5s ease}
+.progress-pct{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
+
+/* ===== 区块标签 ===== */
+.section-label{
+  font-size:11px;letter-spacing:2px;
+  color:var(--ink-3);
+  text-transform:uppercase;
+  margin:24px 0 14px;
+  font-weight:500;
+}
+.section-label.sub{margin-top:20px}
+
+/* ===== 任务列表 ===== */
+.task-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.task-item{
+  display:flex;align-items:center;gap:14px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  padding:14px 18px;
+  transition:all .2s;
+}
+.task-item:hover{border-color:var(--ink-3)}
+.task-item.fixed{background:#fafaf7}
+.task-check{
+  width:20px;height:20px;
+  border:1.5px solid var(--ink-3);
+  border-radius:6px;
+  cursor:pointer;
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+  background:#fff;
+}
+.task-check.checked{background:var(--ink);border-color:var(--ink)}
+.task-check.checked::after{content:'';width:6px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-1px)}
+.task-name{flex:1;font-size:14px;color:var(--ink)}
+.task-item.done .task-name{color:var(--done);text-decoration:line-through}
+.task-tag{font-size:10px;color:var(--ink-3);padding:2px 8px;border:1px solid var(--line);border-radius:4px;letter-spacing:1px}
+.task-del{
+  width:24px;height:24px;
+  border:none;background:transparent;
+  color:var(--ink-3);cursor:pointer;
+  font-size:18px;line-height:1;
+  border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.task-del:hover{background:#fdecea;color:var(--danger)}
+
+/* ===== 添加行 ===== */
+.add-row{display:flex;gap:10px;margin-bottom:8px}
+.form-row{display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.task-input{
+  flex:1;min-width:160px;
+  padding:12px 16px;
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  background:var(--surface);
+  font-size:14px;font-family:inherit;color:var(--ink);
+  transition:border-color .2s;
+}
+.task-input:focus,.num-input:focus,select:focus{outline:none;border-color:var(--ink)}
+.num-input{
+  width:120px;padding:12px 14px;
+  border:1px solid var(--line);border-radius:var(--radius-sm);
+  background:var(--surface);font-size:14px;font-family:inherit;color:var(--ink);
+}
+.add-btn{
+  padding:12px 24px;
+  background:var(--ink);color:#fff;
+  border:none;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:500;cursor:pointer;
+  font-family:inherit;
+  transition:all .2s;
+}
+.add-btn:hover{background:#000;transform:translateY(-1px)}
+.add-btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.add-btn.ghost:hover{background:var(--accent-soft);transform:none}
+
+.empty-hint{color:var(--ink-3);font-size:13px;padding:18px;text-align:center;border:1px dashed var(--line);border-radius:var(--radius-sm);margin-top:8px}
+
+/* ===== 统计卡 ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.stat-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:22px 24px;
+  box-shadow:var(--shadow);
+}
+.stat-label{font-size:11px;color:var(--ink-3);letter-spacing:1.5px;margin-bottom:10px;text-transform:uppercase}
+.stat-value{font-size:32px;font-weight:600;font-variant-numeric:tabular-nums;font-family:var(--serif)}
+.stat-value .unit{font-size:14px;color:var(--ink-3);font-weight:400;margin-left:6px;font-family:var(--sans)}
+
+/* ===== 日志卡 ===== */
+.log-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:24px 28px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+}
+.log-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.log-list.history{max-height:340px;overflow-y:auto}
+.log-item{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 0;
+  border-bottom:1px solid var(--line-2);
+  font-size:14px;
+}
+.log-item:last-child{border-bottom:none}
+.log-time{font-size:12px;color:var(--ink-3);min-width:54px;font-variant-numeric:tabular-nums}
+.log-title{flex:1;color:var(--ink)}
+.log-meta{font-size:12px;color:var(--ink-3);padding:2px 10px;background:var(--accent-soft);border-radius:4px}
+.log-del{width:24px;height:24px;border:none;background:transparent;color:var(--ink-3);cursor:pointer;font-size:16px;border-radius:6px;transition:all .2s}
+.log-del:hover{color:var(--danger);background:#fdecea}
+.log-empty{color:var(--ink-3);font-size:13px;padding:14px 0;text-align:center}
+
+/* ===== 护肤打卡网格 ===== */
+.check-grid{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.check-item{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  transition:all .2s;
+  background:var(--surface);
+}
+.check-item:hover{border-color:var(--ink-3)}
+.check-item.active{background:var(--ink);border-color:var(--ink)}
+.check-item.active .check-name{color:#fff}
+.check-item.active .check-dot{background:#fff;border-color:#fff}
+.check-dot{
+  width:14px;height:14px;border:1.5px solid var(--ink-3);border-radius:50%;
+  flex-shrink:0;transition:all .2s;
+}
+.check-item.active .check-dot::after{content:'';display:block;width:6px;height:6px;background:var(--ink);border-radius:50%;margin:2px auto}
+.check-name{font-size:13px;color:var(--ink)}
+
+/* ===== 周打卡图 ===== */
+.week-chart{display:flex;gap:10px;align-items:flex-end;height:120px;padding-top:10px}
+.week-bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.week-bar-fill{width:100%;background:var(--ink);border-radius:6px 6px 0 0;min-height:4px;transition:height .5s ease}
+.week-bar-fill.zero{background:var(--line-2)}
+.week-bar-day{font-size:11px;color:var(--ink-3)}
+.week-bar-cnt{font-size:10px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* ===== 攒钱 ===== */
+.savings-hero{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:32px 36px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+}
+.savings-label{font-size:11px;letter-spacing:2px;color:var(--ink-3);text-transform:uppercase;margin-bottom:12px}
+.savings-amount{font-size:48px;font-weight:600;font-variant-numeric:tabular-nums;font-family:var(--serif);margin-bottom:8px}
+.savings-amount .currency{font-size:24px;color:var(--ink-2);margin-right:6px}
+.savings-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* ===== Toast ===== */
+.toast{
+  position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:#fff;
+  padding:12px 24px;border-radius:10px;
+  font-size:13px;
+  opacity:0;pointer-events:none;
+  transition:all .3s ease;
+  z-index:100;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== 滚动条 ===== */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--ink-3)}
+
+/* ===== 响应式 ===== */
+@media (max-width:860px){
+  .sidebar{width:64px;padding:20px 8px}
+  .brand-text,.nav-label,.date-label,.reset-btn{display:none}
+  .brand-mark{margin:0 auto}
+  .nav-item{justify-content:center;padding:11px 0}
+  .nav-idx{font-size:10px}
+  .main{padding:28px 20px}
+  .stat-grid{grid-template-columns:1fr}
+  .check-grid{grid-template-columns:repeat(2,1fr)}
+  .page-title{font-size:24px}
+  .savings-amount{font-size:36px}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- 左侧导航栏 -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">蹦</div>
+      <div class="brand-text">
+        <div class="brand-name">蹦哒儿张</div>
+        <div class="brand-sub">PERSONAL WORKBENCH</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="nav-item active" data-page="plan">
+        <span class="nav-idx">01</span>
+        <span class="nav-label">每日计划</span>
+      </a>
+      <a class="nav-item" data-page="study">
+        <span class="nav-idx">02</span>
+        <span class="nav-label">学习</span>
+      </a>
+      <a class="nav-item" data-page="sport">
+        <span class="nav-idx">03</span>
+        <span class="nav-label">运动</span>
+      </a>
+      <a class="nav-item" data-page="skincare">
+        <span class="nav-idx">04</span>
+        <span class="nav-label">护肤</span>
+      </a>
+      <a class="nav-item" data-page="savings">
+        <span class="nav-idx">05</span>
+        <span class="nav-label">攒钱计划</span>
+      </a>
+      <a class="nav-item" data-page="parenting">
+        <span class="nav-idx">06</span>
+        <span class="nav-label">育儿</span>
+      </a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="date-label" id="todayLabel">—</div>
+      <div class="reset-btn" id="resetBtn">重置今日</div>
+    </div>
+  </aside>
+
+  <!-- 主内容区 -->
+  <main class="main">
+    <!-- 页面：每日计划 -->
+    <section class="page active" data-page="plan">
+      <header class="page-head">
+        <div>
+          <div class="page-kicker">DAILY PLAN</div>
+          <h1 class="page-title">每日计划</h1>
+        </div>
+        <div class="page-date" id="planDate">—</div>
+      </header>
+
+      <div class="progress-card">
+        <div class="progress-info">
+          <div class="progress-label">今日完成进度</div>
+          <div class="progress-num"><span id="progressDone">0</span> / <span id="progressTotal">0</span></div>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" id="progressBar" style="width:0%"></div>
+        </div>
+        <div class="progress-pct" id="progressPct">0%</div>
+      </div>
+
+      <div class="section-label">固定任务</div>
+      <ul class="task-list" id="fixedTasks"></ul>
+
+      <div class="section-label">自定义任务</div>
+      <div class="add-row">
+        <input type="text" id="taskInput" class="task-input" placeholder="添加一项今日任务…">
+        <button class="add-btn" id="addBtn">添加</button>
+      </div>
+      <ul class="task-list" id="customTasks"></ul>
+      <div class="empty-hint" id="customEmpty">暂无自定义任务，添加一项开始今天吧。</div>
+    </section>
+
+    <!-- 页面：学习 -->
+    <section class="page" data-page="study">
+      <header class="page-head">
+        <div>
+          <div class="page-kicker">STUDY</div>
+          <h1 class="page-title">学习</h1>
+        </div>
+      </header>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">今日时长</div>
+          <div class="stat-value"><span id="studyToday">0</span><span class="unit">min</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">累计时长</div>
+          <div class="stat-value"><span id="studyTotal">0</span><span class="unit">min</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">连续天数</div>
+          <div class="stat-value"><span id="studyStreak">0</span><span class="unit">天</span></div>
+        </div>
+      </div>
+      <div class="log-card">
+        <div class="section-label">记录今日学习</div>
+        <div class="form-row">
+          <input type="text" id="studyTitle" class="task-input" placeholder="学习内容（如：读《认知觉醒》第3章）">
+          <input type="number" id="studyMin" class="num-input" placeholder="分钟" min="0">
+          <button class="add-btn" id="studyAdd">记录</button>
+        </div>
+        <div class="section-label sub">今日记录</div>
+        <ul class="log-list" id="studyTodayList"></ul>
+      </div>
+      <div class="log-card">
+        <div class="section-label">历史记录</div>
+        <ul class="log-list history" id="studyHistory"></ul>
+      </div>
+    </section>
+
+    <!-- 页面：运动 -->
+    <section class="page" data-page="sport">
+      <header class="page-head">
+        <div>
+          <div class="page-kicker">SPORT</div>
+          <h1 class="page-title">运动</h1>
+        </div>
+      </header>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">今日时长</div>
+          <div class="stat-value"><span id="sportToday">0</span><span class="unit">min</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">累计时长</div>
+          <div class="stat-value"><span id="sportTotal">0</span><span class="unit">min</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">连续天数</div>
+          <div class="stat-value"><span id="sportStreak">0</span><span class="unit">天</span></div>
+        </div>
+      </div>
+      <div class="log-card">
+        <div class="section-label">记录今日运动</div>
+        <div class="form-row">
+          <input type="text" id="sportTitle" class="task-input" placeholder="运动内容（如：晨跑5公里）">
+          <input type="number" id="sportMin" class="num-input" placeholder="分钟" min="0">
+          <button class="add-btn" id="sportAdd">记录</button>
+        </div>
+        <div class="section-label sub">今日记录</div>
+        <ul class="log-list" id="sportTodayList"></ul>
+      </div>
+      <div class="log-card">
+        <div class="section-label">历史记录</div>
+        <ul class="log-list history" id="sportHistory"></ul>
+      </div>
+    </section>
+
+    <!-- 页面：护肤 -->
+    <section class="page" data-page="skincare">
+      <header class="page-head">
+        <div>
+          <div class="page-kicker">SKINCARE</div>
+          <h1 class="page-title">护肤</h1>
+        </div>
+      </header>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">今日打卡</div>
+          <div class="stat-value"><span id="skinToday">0</span><span class="unit">/6</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">累计打卡</div>
+          <div class="stat-value"><span id="skinTotal">0</span><span class="unit">次</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">连续天数</div>
+          <div class="stat-value"><span id="skinStreak">0</span><span class="unit">天</span></div>
+        </div>
+      </div>
+      <div class="log-card">
+        <div class="section-label">今日打卡</div>
+        <ul class="check-grid" id="skinCheckGrid"></ul>
+      </div>
+      <div class="log-card">
+        <div class="section-label">近7日打卡</div>
+        <div class="week-chart" id="skinWeekChart"></div>
+      </div>
+    </section>
+
+    <!-- 页面：攒钱计划 -->
+    <section class="page" data-page="savings">
+      <header class="page-head">
+        <div>
+          <div class="page-kicker">SAVINGS</div>
+          <h1 class="page-title">攒钱计划</h1>
+        </div>
+      </header>
+      <div class="savings-hero">
+        <div class="savings-label">已攒金额</div>
+        <div class="savings-amount"><span class="currency">¥</span><span id="savingsTotal">0.00</span></div>
+        <div class="progress-track big">
+          <div class="progress-bar" id="savingsBar" style="width:0%"></div>
+        </div>
+        <div class="savings-meta">
+          <span>目标 <span id="savingsGoal">10000</span> 元</span>
+          <span id="savingsPct">0%</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <input type="number" id="savingsInput" class="task-input" placeholder="存入金额" min="0" step="0.01">
+        <input type="text" id="savingsNote" class="task-input" placeholder="备注（如：少喝一杯奶茶）">
+        <button class="add-btn" id="savingsAdd">存入</button>
+      </div>
+      <div class="form-row">
+        <input type="number" id="goalInput" class="num-input" placeholder="新目标金额" min="0">
+        <button class="add-btn ghost" id="goalBtn">更新目标</button>
+      </div>
+      <div class="log-card">
+        <div class="section-label">存入记录</div>
+        <ul class="log-list" id="savingsList"></ul>
+      </div>
+    </section>
+
+    <!-- 页面：育儿 -->
+    <section class="page" data-page="parenting">
+      <header class="page-head">
+        <div>
+          <div class="page-kicker">PARENTING</div>
+          <h1 class="page-title">育儿</h1>
+        </div>
+      </header>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">今日记录</div>
+          <div class="stat-value"><span id="parentToday">0</span><span class="unit">条</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">累计记录</div>
+          <div class="stat-value"><span id="parentTotal">0</span><span class="unit">条</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">连续天数</div>
+          <div class="stat-value"><span id="parentStreak">0</span><span class="unit">天</span></div>
+        </div>
+      </div>
+      <div class="log-card">
+        <div class="section-label">记录今日育儿</div>
+        <div class="form-row">
+          <select id="parentTag" class="num-input">
+            <option value="陪伴">陪伴</option>
+            <option value="早教">早教</option>
+            <option value="阅读">阅读</option>
+            <option value="户外">户外</option>
+            <option value="饮食">饮食</option>
+            <option value="睡眠">睡眠</option>
+            <option value="其他">其他</option>
+          </select>
+          <input type="text" id="parentTitle" class="task-input" placeholder="记录内容（如：一起拼积木30分钟）">
+          <button class="add-btn" id="parentAdd">记录</button>
+        </div>
+        <div class="section-label sub">今日记录</div>
+        <ul class="log-list" id="parentTodayList"></ul>
+      </div>
+      <div class="log-card">
+        <div class="section-label">历史记录</div>
+        <ul class="log-list history" id="parentHistory"></ul>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+/* ===== 蹦哒儿张 · 个人工作台 · 逻辑层 ===== */
+(function(){
+  'use strict';
+
+  const STORE_KEY = 'beng_da_er_zhang_workbench';
+  const SKIN_ITEMS = ['洁面','水乳','精华','面霜','防晒','眼霜'];
+  const WEEK_DAYS = ['日','一','二','三','四','五','六'];
+
+  // 默认固定任务（5项）
+  const FIXED_TASKS = [
+    { id:'f-study',    name:'学习', tag:'FIXED' },
+    { id:'f-sport',    name:'运动', tag:'FIXED' },
+    { id:'f-skincare', name:'护肤', tag:'FIXED' },
+    { id:'f-savings',  name:'攒钱', tag:'FIXED' },
+    { id:'f-parenting',name:'育儿', tag:'FIXED' },
+  ];
+
+  // ===== 工具函数 =====
+  const todayStr = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  };
+  const nowTime = () => {
+    const d = new Date();
+    return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  };
+  const weekIdx = (offset=0) => {
+    const d = new Date();
+    d.setDate(d.getDate()+offset);
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  };
+  const fmtDate = (s) => {
+    const [y,m,d] = s.split('-');
+    return `${y}年${parseInt(m)}月${parseInt(d)}日`;
+  };
+
+  // ===== 数据层 =====
+  function defaultData(){
+    return {
+      date: todayStr(),
+      plan:{
+        fixedDone: {},      // {id: true}
+        custom: [],         // [{id,name,done}]
+      },
+      study:{ today:[], history:[], totalMin:0, streak:0, lastDate:null },
+      sport:{ today:[], history:[], totalMin:0, streak:0, lastDate:null },
+      skincare:{ checked:{}, history:{}, totalCnt:0, streak:0, lastDate:null },
+      savings:{ total:0, goal:10000, records:[] },
+      parenting:{ today:[], history:[], totalCnt:0, streak:0, lastDate:null },
+      streakCache:{},  // {page: lastDate} 用于跨日计算
+    };
+  }
+
+  function load(){
+    try{
+      const raw = localStorage.getItem(STORE_KEY);
+      if(!raw) return defaultData();
+      const d = JSON.parse(raw);
+      // 跨日重置：保留累计，重置今日
+      if(d.date !== todayStr()){
+        d = migrateNewDay(d);
+      }
+      return d;
+    }catch(e){
+      console.error('load error', e);
+      return defaultData();
+    }
+  }
+
+  // 跨日迁移：把今日记录归入历史，重置今日
+  function migrateNewDay(d){
+    const newD = JSON.parse(JSON.stringify(d));
+    // 每日计划：固定任务清空done和跳过，自定义任务清空
+    newD.plan.fixedDone = {};
+    newD.plan.custom = [];
+    // 学习：今日→历史
+    if(newD.study.today.length){
+      newD.study.history = newD.study.history.concat(newD.study.today);
+      newD.study.today = [];
+    }
+    // 运动
+    if(newD.sport.today.length){
+      newD.sport.history = newD.sport.history.concat(newD.sport.today);
+      newD.sport.today = [];
+    }
+    // 护肤：今日打卡归档到 history[date] = count
+    const checkedCount = Object.values(newD.skincare.checked).filter(Boolean).length;
+    if(checkedCount>0){
+      newD.skincare.history[newD.date] = checkedCount;
+    }
+    newD.skincare.checked = {};
+    // 育儿
+    if(newD.parenting.today.length){
+      newD.parenting.history = newD.parenting.history.concat(newD.parenting.today);
+      newD.parenting.today = [];
+    }
+    newD.date = todayStr();
+    return newD;
+  }
+
+  function save(){
+    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+  }
+
+  let state = load();
+
+  // ===== Toast =====
+  function toast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(()=>t.classList.remove('show'), 1800);
+  }
+
+  // ===== 计算连续天数 =====
+  function calcStreak(historyArr, lastDate){
+    if(!historyArr.length && !lastDate) return 0;
+    // 简化：基于 lastDate 与今天的关系
+    if(!lastDate) return historyArr.length>0 ? 1 : 0;
+    const today = new Date();
+    const last = new Date(lastDate);
+    const diff = Math.floor((today - last) / 86400000);
+    if(diff === 0) return Math.max(1, historyArr.length>0?1:0);
+    if(diff === 1) return 1; // 昨天有记录，今天延续（待今日补录）
+    return 0;
+  }
+
+  // ===== 页面切换 =====
+  function switchPage(page){
+    document.querySelectorAll('.nav-item').forEach(n=>{
+      n.classList.toggle('active', n.dataset.page===page);
+    });
+    document.querySelectorAll('.page').forEach(p=>{
+      p.classList.toggle('active', p.dataset.page===page);
+    });
+  }
+
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    n.addEventListener('click', ()=>switchPage(n.dataset.page));
+  });
+
+  // ===== 日期显示 =====
+  const dateText = `${fmtDate(todayStr())} · 星期${WEEK_DAYS[new Date().getDay()]}`;
+  document.getElementById('todayLabel').textContent = dateText;
+  document.getElementById('planDate').textContent = dateText;
+
+  // ===== 每日计划渲染 =====
+  function renderPlan(){
+    // 固定任务（支持跳过今日）
+    const fixedEl = document.getElementById('fixedTasks');
+    fixedEl.innerHTML = '';
+    const skipArr = state.plan.fixedDone.__skip || [];
+    const visibleFixed = FIXED_TASKS.filter(t=>!skipArr.includes(t.id));
+    if(visibleFixed.length === 0){
+      fixedEl.innerHTML = '<li class="empty-hint">今日固定任务已全部跳过。</li>';
+    }
+    visibleFixed.forEach(t=>{
+      const done = !!state.plan.fixedDone[t.id];
+      const li = document.createElement('li');
+      li.className = 'task-item fixed' + (done?' done':'');
+      li.innerHTML = `
+        <div class="task-check ${done?'checked':''}" data-id="${t.id}"></div>
+        <span class="task-name">${t.name}</span>
+        <span class="task-tag">FIXED</span>
+        <button class="task-del" data-id="${t.id}" data-type="fixed" title="跳过今日">×</button>
+      `;
+      fixedEl.appendChild(li);
+    });
+
+    // 自定义任务
+    const customEl = document.getElementById('customTasks');
+    customEl.innerHTML = '';
+    const empty = document.getElementById('customEmpty');
+    if(state.plan.custom.length === 0){
+      empty.style.display = 'block';
+    }else{
+      empty.style.display = 'none';
+      state.plan.custom.forEach(t=>{
+        const li = document.createElement('li');
+        li.className = 'task-item' + (t.done?' done':'');
+        li.innerHTML = `
+          <div class="task-check ${t.done?'checked':''}" data-id="${t.id}" data-type="custom"></div>
+          <span class="task-name">${t.name}</span>
+          <span class="task-tag">CUSTOM</span>
+          <button class="task-del" data-id="${t.id}" data-type="custom" title="删除">×</button>
+        `;
+        customEl.appendChild(li);
+      });
+    }
+
+    // 进度
+    const allCount = visibleFixed.length + state.plan.custom.length;
+    const doneCount = visibleFixed.filter(t=>!!state.plan.fixedDone[t.id]).length
+                    + state.plan.custom.filter(t=>t.done).length;
+    document.getElementById('progressDone').textContent = doneCount;
+    document.getElementById('progressTotal').textContent = allCount;
+    const pct = allCount>0 ? Math.round(doneCount/allCount*100) : 0;
+    document.getElementById('progressBar').style.width = pct+'%';
+    document.getElementById('progressPct').textContent = pct+'%';
+  }
+
+  // 任务勾选/删除事件委托
+  document.getElementById('fixedTasks').addEventListener('click', onTaskClick);
+  document.getElementById('customTasks').addEventListener('click', onTaskClick);
+
+  function onTaskClick(e){
+    if(e.target.classList.contains('task-check')){
+      const id = e.target.dataset.id;
+      const type = e.target.dataset.type || 'fixed';
+      if(type === 'fixed'){
+        state.plan.fixedDone[id] = !state.plan.fixedDone[id];
+      }else{
+        const t = state.plan.custom.find(x=>x.id===id);
+        if(t) t.done = !t.done;
+      }
+      save(); renderPlan();
+    }else if(e.target.classList.contains('task-del')){
+      const id = e.target.dataset.id;
+      const type = e.target.dataset.type;
+      if(type === 'fixed'){
+        // 固定任务：标记为今日跳过，不影响默认清单（次日自动恢复）
+        if(!state.plan.fixedDone.__skip) state.plan.fixedDone.__skip = [];
+        if(!state.plan.fixedDone.__skip.includes(id)){
+          state.plan.fixedDone.__skip.push(id);
+        }
+      }else{
+        state.plan.custom = state.plan.custom.filter(x=>x.id!==id);
+      }
+      save(); renderPlan();
+      toast('已删除');
+    }
+  }
+
+  // 添加自定义任务
+  document.getElementById('addBtn').addEventListener('click', addCustomTask);
+  document.getElementById('taskInput').addEventListener('keydown', e=>{
+    if(e.key==='Enter') addCustomTask();
+  });
+  function addCustomTask(){
+    const input = document.getElementById('taskInput');
+    const name = input.value.trim();
+    if(!name){ toast('请输入任务名称'); return; }
+    state.plan.custom.push({ id:'c-'+Date.now(), name, done:false });
+    input.value = '';
+    save(); renderPlan();
+    toast('已添加任务');
+  }
+
+  // ===== 学习页面 =====
+  function renderStudy(){
+    const d = state.study;
+    const todayMin = d.today.reduce((s,x)=>s+Number(x.min||0),0);
+    document.getElementById('studyToday').textContent = todayMin;
+    document.getElementById('studyTotal').textContent = d.totalMin + todayMin;
+    document.getElementById('studyStreak').textContent = d.streak || (d.today.length>0?1:0);
+    renderLogList('studyTodayList', d.today, 'today');
+    renderLogList('studyHistory', d.history, 'history');
+  }
+  document.getElementById('studyAdd').addEventListener('click', ()=>{
+    const title = document.getElementById('studyTitle').value.trim();
+    const min = Number(document.getElementById('studyMin').value) || 0;
+    if(!title){ toast('请输入学习内容'); return; }
+    if(min<=0){ toast('请输入有效时长'); return; }
+    state.study.today.push({ id:'s-'+Date.now(), title, min, time:nowTime() });
+    if(state.study.lastDate !== todayStr()){
+      // 跨日 streak 计算
+      if(state.study.lastDate){
+        const diff = Math.floor((new Date(todayStr()) - new Date(state.study.lastDate)) / 86400000);
+        state.study.streak = diff===1 ? (state.study.streak||0)+1 : 1;
+      }else{
+        state.study.streak = 1;
+      }
+      state.study.lastDate = todayStr();
+    }
+    document.getElementById('studyTitle').value = '';
+    document.getElementById('studyMin').value = '';
+    save(); renderStudy();
+    toast('已记录学习');
+  });
+
+  // ===== 运动页面 =====
+  function renderSport(){
+    const d = state.sport;
+    const todayMin = d.today.reduce((s,x)=>s+Number(x.min||0),0);
+    document.getElementById('sportToday').textContent = todayMin;
+    document.getElementById('sportTotal').textContent = d.totalMin + todayMin;
+    document.getElementById('sportStreak').textContent = d.streak || (d.today.length>0?1:0);
+    renderLogList('sportTodayList', d.today, 'today');
+    renderLogList('sportHistory', d.history, 'history');
+  }
+  document.getElementById('sportAdd').addEventListener('click', ()=>{
+    const title = document.getElementById('sportTitle').value.trim();
+    const min = Number(document.getElementById('sportMin').value) || 0;
+    if(!title){ toast('请输入运动内容'); return; }
+    if(min<=0){ toast('请输入有效时长'); return; }
+    state.sport.today.push({ id:'p-'+Date.now(), title, min, time:nowTime() });
+    if(state.sport.lastDate !== todayStr()){
+      if(state.sport.lastDate){
+        const diff = Math.floor((new Date(todayStr()) - new Date(state.sport.lastDate)) / 86400000);
+        state.sport.streak = diff===1 ? (state.sport.streak||0)+1 : 1;
+      }else{
+        state.sport.streak = 1;
+      }
+      state.sport.lastDate = todayStr();
+    }
+    document.getElementById('sportTitle').value = '';
+    document.getElementById('sportMin').value = '';
+    save(); renderSport();
+    toast('已记录运动');
+  });
+
+  // ===== 护肤页面 =====
+  function renderSkincare(){
+    const d = state.skincare;
+    const checkedArr = SKIN_ITEMS.map((name,i)=>({ name, key:'k'+i, done:!!d.checked['k'+i] }));
+    const todayCnt = checkedArr.filter(x=>x.done).length;
+    document.getElementById('skinToday').textContent = todayCnt;
+    document.getElementById('skinTotal').textContent = d.totalCnt + todayCnt;
+    document.getElementById('skinStreak').textContent = d.streak || (todayCnt>0?1:0);
+
+    // 打卡网格
+    const grid = document.getElementById('skinCheckGrid');
+    grid.innerHTML = '';
+    checkedArr.forEach(x=>{
+      const li = document.createElement('li');
+      li.className = 'check-item' + (x.done?' active':'');
+      li.dataset.key = x.key;
+      li.innerHTML = `<span class="check-dot"></span><span class="check-name">${x.name}</span>`;
+      li.addEventListener('click', ()=>{
+        d.checked[x.key] = !d.checked[x.key];
+        // streak 首次打卡
+        if(d.checked[x.key] && d.lastDate !== todayStr()){
+          if(d.lastDate){
+            const diff = Math.floor((new Date(todayStr()) - new Date(d.lastDate)) / 86400000);
+            d.streak = diff===1 ? (d.streak||0)+1 : 1;
+          }else{
+            d.streak = 1;
+          }
+          d.lastDate = todayStr();
+        }
+        save(); renderSkincare();
+      });
+      grid.appendChild(li);
+    });
+
+    // 周 chart
+    const chart = document.getElementById('skinWeekChart');
+    chart.innerHTML = '';
+    for(let i=6;i>=0;i--){
+      const day = weekIdx(-i);
+      const cnt = (i===0) ? todayCnt : (d.history[day] || 0);
+      const h = Math.max(4, Math.min(100, cnt/6*100));
+      const dayLabel = WEEK_DAYS[new Date(day).getDay()];
+      const bar = document.createElement('div');
+      bar.className = 'week-bar';
+      bar.innerHTML = `
+        <span class="week-bar-cnt">${cnt}</span>
+        <div class="week-bar-fill ${cnt===0?'zero':''}" style="height:${h}%"></div>
+        <span class="week-bar-day">${dayLabel}</span>
+      `;
+      chart.appendChild(bar);
+    }
+  }
+
+  // ===== 攒钱页面 =====
+  function renderSavings(){
+    const d = state.savings;
+    document.getElementById('savingsTotal').textContent = Number(d.total).toFixed(2);
+    document.getElementById('savingsGoal').textContent = Number(d.goal).toLocaleString();
+    const pct = d.goal>0 ? Math.min(100, Math.round(d.total/d.goal*100)) : 0;
+    document.getElementById('savingsBar').style.width = pct+'%';
+    document.getElementById('savingsPct').textContent = pct+'%';
+
+    const list = document.getElementById('savingsList');
+    list.innerHTML = '';
+    const records = [...d.records].reverse();
+    if(records.length===0){
+      list.innerHTML = '<li class="log-empty">还没有存入记录，开始第一笔攒钱吧。</li>';
+      return;
+    }
+    records.forEach(r=>{
+      const li = document.createElement('li');
+      li.className = 'log-item';
+      li.innerHTML = `
+        <span class="log-time">${r.date}</span>
+        <span class="log-title">${r.note || '存入'}</span>
+        <span class="log-meta">+¥${Number(r.amount).toFixed(2)}</span>
+        <button class="log-del" data-id="${r.id}" title="删除">×</button>
+      `;
+      list.appendChild(li);
+    });
+    list.querySelectorAll('.log-del').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.dataset.id;
+        const r = d.records.find(x=>x.id===id);
+        if(r){
+          d.total = Math.max(0, d.total - r.amount);
+          d.records = d.records.filter(x=>x.id!==id);
+          save(); renderSavings();
+          toast('已撤销该笔记录');
+        }
+      });
+    });
+  }
+  document.getElementById('savingsAdd').addEventListener('click', ()=>{
+    const amount = Number(document.getElementById('savingsInput').value);
+    const note = document.getElementById('savingsNote').value.trim();
+    if(!(amount>0)){ toast('请输入有效金额'); return; }
+    state.savings.records.push({ id:'sv-'+Date.now(), amount, note, date:todayStr() });
+    state.savings.total += amount;
+    document.getElementById('savingsInput').value = '';
+    document.getElementById('savingsNote').value = '';
+    save(); renderSavings();
+    toast(`已存入 ¥${amount.toFixed(2)}`);
+  });
+  document.getElementById('goalBtn').addEventListener('click', ()=>{
+    const goal = Number(document.getElementById('goalInput').value);
+    if(!(goal>0)){ toast('请输入有效目标金额'); return; }
+    state.savings.goal = goal;
+    document.getElementById('goalInput').value = '';
+    save(); renderSavings();
+    toast('目标已更新');
+  });
+
+  // ===== 育儿页面 =====
+  function renderParenting(){
+    const d = state.parenting;
+    document.getElementById('parentToday').textContent = d.today.length;
+    document.getElementById('parentTotal').textContent = d.totalCnt + d.today.length;
+    document.getElementById('parentStreak').textContent = d.streak || (d.today.length>0?1:0);
+    renderLogList('parentTodayList', d.today, 'today');
+    renderLogList('parentHistory', d.history, 'history');
+  }
+  document.getElementById('parentAdd').addEventListener('click', ()=>{
+    const tag = document.getElementById('parentTag').value;
+    const title = document.getElementById('parentTitle').value.trim();
+    if(!title){ toast('请输入记录内容'); return; }
+    state.parenting.today.push({ id:'pa-'+Date.now(), title, tag, time:nowTime() });
+    if(state.parenting.lastDate !== todayStr()){
+      if(state.parenting.lastDate){
+        const diff = Math.floor((new Date(todayStr()) - new Date(state.parenting.lastDate)) / 86400000);
+        state.parenting.streak = diff===1 ? (state.parenting.streak||0)+1 : 1;
+      }else{
+        state.parenting.streak = 1;
+      }
+      state.parenting.lastDate = todayStr();
+    }
+    document.getElementById('parentTitle').value = '';
+    save(); renderParenting();
+    toast('已记录育儿');
+  });
+
+  // ===== 通用日志列表渲染 =====
+  function renderLogList(elId, arr, type){
+    const el = document.getElementById(elId);
+    el.innerHTML = '';
+    if(!arr.length){
+      el.innerHTML = '<li class="log-empty">'+(type==='today'?'今日还没有记录。':'暂无历史记录。')+'</li>';
+      return;
+    }
+    const list = type==='history' ? [...arr].reverse() : arr;
+    list.forEach(r=>{
+      const li = document.createElement('li');
+      li.className = 'log-item';
+      let meta = '';
+      if(r.min) meta = `<span class="log-meta">${r.min} min</span>`;
+      else if(r.tag) meta = `<span class="log-meta">${r.tag}</span>`;
+      li.innerHTML = `
+        <span class="log-time">${r.time || r.date || ''}</span>
+        <span class="log-title">${r.title}</span>
+        ${meta}
+        <button class="log-del" data-id="${r.id}" data-type="${type}" title="删除">×</button>
+      `;
+      el.appendChild(li);
+    });
+    el.querySelectorAll('.log-del').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.dataset.id;
+        const t = btn.dataset.type;
+        let target;
+        if(t==='today'){
+          target = state[elId.replace('TodayList','').replace('List','')];
+          if(!target) {
+            // 通过 elId 反查
+            const map = {studyTodayList:'study',sportTodayList:'sport',parentTodayList:'parenting'};
+            target = state[map[elId]];
+          }
+          if(target){
+            const item = target.today.find(x=>x.id===id);
+            if(item && item.min) target.totalMin = Math.max(0, (target.totalMin||0) - item.min);
+            target.today = target.today.filter(x=>x.id!==id);
+          }
+        }else{
+          const map = {studyHistory:'study',sportHistory:'sport',parentHistory:'parenting'};
+          target = state[map[elId]];
+          if(target){
+            const item = target.history.find(x=>x.id===id);
+            if(item && item.min) target.totalMin = Math.max(0, (target.totalMin||0) - item.min);
+            target.history = target.history.filter(x=>x.id!==id);
+          }
+        }
+        save();
+        // 重新渲染对应页面
+        if(elId.startsWith('study')) renderStudy();
+        else if(elId.startsWith('sport')) renderSport();
+        else if(elId.startsWith('parent')) renderParenting();
+        toast('已删除');
+      });
+    });
+  }
+
+  // ===== 重置今日 =====
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    if(!confirm('确定要重置今日所有数据吗？累计数据不会被清除。')) return;
+    // 把今日归档到历史（保留累计）
+    if(state.study.today.length){
+      state.study.history = state.study.history.concat(state.study.today);
+      state.study.today = [];
+    }
+    if(state.sport.today.length){
+      state.sport.history = state.sport.history.concat(state.sport.today);
+      state.sport.today = [];
+    }
+    const skinCnt = Object.values(state.skincare.checked).filter(Boolean).length;
+    if(skinCnt>0){
+      state.skincare.history[state.date] = skinCnt;
+      state.skincare.totalCnt += skinCnt;
+    }
+    state.skincare.checked = {};
+    if(state.parenting.today.length){
+      state.parenting.history = state.parenting.history.concat(state.parenting.today);
+      state.parenting.today = [];
+    }
+    state.plan.fixedDone = {};
+    state.plan.custom = [];
+    save();
+    renderAll();
+    toast('今日已重置');
+  });
+
+  // ===== 初始渲染 =====
+  function renderAll(){
+    renderPlan();
+    renderStudy();
+    renderSport();
+    renderSkincare();
+    renderSavings();
+    renderParenting();
+  }
+  renderAll();
+
+  // 每分钟检查是否跨日
+  setInterval(()=>{
+    if(state.date !== todayStr()){
+      state = migrateNewDay(state);
+      save();
+      renderAll();
+      toast('新的一天，数据已自动重置');
+    }
+  }, 60000);
+
+})();
+
+</script>
+</body>
+</html>
